@@ -13,15 +13,17 @@ class Program
     .AddSingleton<IPlayerRepo, PlayerRepo>()
     .BuildServiceProvider();
 
-    var logger = serviceProvider.GetService<ILogger>();
-    var playerRepo = serviceProvider.GetService<IPlayerRepo>();
+    var logger = serviceProvider.GetService<ILogger>() ??
+      throw new InvalidOperationException("Logger is not available.");
+    var playerRepo = serviceProvider.GetService<IPlayerRepo>() ??
+      throw new InvalidOperationException("PlayerRepo is not available.");
 
-    logger?.Log("Adding players...");
-    playerRepo?.AddPlayer("Alice");
-    playerRepo?.AddPlayer("Ella");
-    playerRepo?.AddPlayer("Bob");
+    logger.Log("Adding players...");
+    playerRepo.AddPlayer("Alice");
+    playerRepo.AddPlayer("Ella");
+    playerRepo.AddPlayer("Bob");
 
-    logger?.Log("Current players:");
+    logger.Log("Current players:");
     var players = playerRepo?.GetPlayers() ?? [];
     foreach (var player in players)
     {
@@ -30,7 +32,8 @@ class Program
 
     // factory pattern för att skapa ett spel
     Console.WriteLine("Enter the desired game:");
-    var game = GameFactory.CreateGame(Console.ReadLine());
+    var game = GameFactory.CreateGame(Console.ReadLine()) ??
+      throw new InvalidOperationException("GameFactory is not available.");
     game?.StartGame(players);
   }
 }
