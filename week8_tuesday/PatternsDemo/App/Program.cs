@@ -19,9 +19,10 @@ class Program
       throw new InvalidOperationException("PlayerRepo is not available.");
 
     logger.Log("Adding players...");
-    playerRepo.AddPlayer("Alice");
-    playerRepo.AddPlayer("Ella");
-    playerRepo.AddPlayer("Bob");
+    foreach (var player in new[] { "Alice", "Ella", "Bob" })
+    {
+      playerRepo.AddPlayer(player);
+    }
 
     logger.Log("Current players:");
     var players = playerRepo?.GetPlayers() ?? [];
@@ -34,6 +35,6 @@ class Program
     Console.WriteLine("Enter the desired game:");
     var game = GameFactory.CreateGame(Console.ReadLine()) ??
       throw new InvalidOperationException("GameFactory is not available.");
-    game?.StartGame(players);
+    game.StartGame(players);
   }
 }
