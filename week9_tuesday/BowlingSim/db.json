@@ -1,0 +1,48 @@
+{
+  "Members": [
+    {
+      "Id": 1,
+      "Name": "Alice"
+    },
+    {
+      "Id": 2,
+      "Name": "Ella"
+    },
+    {
+      "Id": 3,
+      "Name": "John"
+    },
+    {
+      "Id": 4,
+      "Name": "Dirk"
+    }
+  ],
+  "Matches": [
+    {
+      "Id": 1,
+      "Player1": {
+        "Id": 1,
+        "Name": "Alice"
+      },
+      "Player2": {
+        "Id": 2,
+        "Name": "Ella"
+      },
+      "Score1": 111,
+      "Score2": 98
+    },
+    {
+      "Id": 2,
+      "Player1": {
+        "Id": 4,
+        "Name": "Dirk"
+      },
+      "Player2": {
+        "Id": 3,
+        "Name": "John"
+      },
+      "Score1": 120,
+      "Score2": 144
+    }
+  ]
+}
