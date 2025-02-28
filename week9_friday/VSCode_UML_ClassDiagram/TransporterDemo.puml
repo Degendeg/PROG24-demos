@@ -1,0 +1,26 @@
+@startuml TransporterDemo
+interface ITransport {
+  +GetTravelTime()
+}
+
+class Bike {
+  +GetTravelTime()
+}
+
+class Bus {
+  +GetTravelTime()
+}
+
+class Car {
+  +GetTravelTime()
+}
+
+class TransportFactory {
+  +CreateTransport(string transportType): ITransport
+}
+
+ITransport <|.. Bike
+ITransport <|.. Bus
+ITransport <|.. Car
+TransportFactory ..> ITransport : "Creates"
+@enduml
