@@ -9,7 +9,7 @@ class Program
 
     while (true)
     {
-      Console.WriteLine("\nVälj ett alternativ:");
+      Console.WriteLine("\nBowlingSim 🎳 \n> Välj ett alternativ:");
       Console.WriteLine("1. Registrera medlem");
       Console.WriteLine("2. Skapa en match");
       Console.WriteLine("3. Bestäm vinnare av en match");

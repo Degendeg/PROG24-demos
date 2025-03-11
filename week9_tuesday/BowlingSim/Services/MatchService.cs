@@ -23,6 +23,12 @@ namespace BowlingSim.Services
       int p1Id = ReadIntInput("Ange ID för spelare 1: ");
       int p2Id = ReadIntInput("Ange ID för spelare 2: ");
 
+      if (p1Id == p2Id)
+      {
+        Console.WriteLine("En spelare kan inte möta sig själv, försök igen!");
+        return;
+      }
+
       var player1 = members.Find(m => m.Id == p1Id);
       var player2 = members.Find(m => m.Id == p2Id);
 
@@ -49,6 +55,8 @@ namespace BowlingSim.Services
 
     public static void DetermineWinner()
     {
+      ShowMatches();
+
       var matches = JsonDb.Instance.Matches;
       if (matches.Count == 0)
       {
@@ -65,14 +73,22 @@ namespace BowlingSim.Services
         return;
       }
 
-      match.Score1 = ReadIntInput("Ange poäng för spelare 1: ");
-      match.Score2 = ReadIntInput("Ange poäng för spelare 2: ");
+      match.Score1 = new Random().Next(80, 301);
+      match.Score2 = new Random().Next(80, 301);
+
+      for (int i = 0; i <= 3; i++)
+      {
+        Console.Clear();
+        Console.Write("Match spelas" + new string('.', i));
+        Thread.Sleep(500);
+      }
 
       string winner = match.Score1 > match.Score2 ? match.Player1.Name :
                       match.Score2 > match.Score1 ? match.Player2.Name :
                       "Oavgjort";
 
-      Console.WriteLine($"Vinnare: {winner}");
+      Console.WriteLine($"\nNamn/poäng: {match.Player1.Name} : {match.Score1} | {match.Player2.Name} : {match.Score2}");
+      Console.WriteLine($"Vinnare: {winner} 🥇");
       JsonDb.Instance.Save();
     }
 
