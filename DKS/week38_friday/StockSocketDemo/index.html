@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktiekurs Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white rounded-2xl shadow-lg p-8 w-96 text-center">
+    <h1 class="text-4xl font-semibold text-slate-800 mb-4">📈 Live Aktiekurs</h1>
+    <div id="price" class="text-2xl font-bold text-indigo-600">Väntar...</div>
+  </div>
+
+  <script>
+    const priceDiv = document.getElementById("price")
+    let hasConnected = false
+    let ws
+
+    const connect = () => {
+      ws = new WebSocket("ws://localhost:5000/ws/")
+
+      ws.onopen = () => {
+        hasConnected = true
+        console.log("[Client] connected")
+      }
+
+      ws.onmessage = (e) => {
+        console.log("[Client] received: " + e.data)
+        priceDiv.textContent = e.data
+      }
+
+      ws.onclose = () => {
+        console.log("[Client] disconnected")
+        if (hasConnected) {
+          priceDiv.textContent = "Försöker ansluta.."
+        }
+      }
+
+      ws.onerror = (err) => {
+        console.error("[Client] error:" + err)
+        ws.close()
+      }
+    }
+
+    connect()
+  </script>
+</body>
+
+</html>
