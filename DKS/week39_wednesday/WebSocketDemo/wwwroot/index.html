@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+
+  <div class="bg-white shadow-lg rounded-2xl p-6 w-96">
+    <h1 class="text-2xl font-bold mb-4 text-center">WebSocket Activity Feed</h1>
+    <button id="btn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 mb-4 w-full">Connect</button>
+    <div id="messages"
+      class="h-64 overflow-y-auto border border-slate-300 rounded p-2 bg-slate-50 flex flex-col space-y-1">
+      <div class="text-slate-400">Waiting for messages...</div>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById("btn")
+    const messageDiv = document.getElementById("messages")
+    let ws
+
+    const addMessage = (text) => {
+      const msg = document.createElement("div")
+      msg.className = "bg-indigo-100 text-indigo-800 rounded px-2 py-1 text-sm"
+      msg.textContent = text
+      messageDiv.appendChild(msg)
+      messageDiv.scrollTop = messageDiv.scrollHeight
+    }
+    btn.onclick = () => {
+      // om websocket redan är öppen -> disconnecta
+      if (ws && ws.readyState == WebSocket.OPEN) {
+        ws.close()
+        btn.innerHTML = "Connect"
+        ws = null
+        return
+      }
+
+      // annars anslut
+      let protocol = window.location.protocol === "https:" ? "wss" : "ws"
+      ws = new WebSocket(`${protocol}://${window.location.host}/ws`)
+
+      ws.onopen = () => {
+        messageDiv.innerHTML = ''
+        btn.innerHTML = 'Disconnect'
+        addMessage("Connected to server")
+      }
+
+      ws.onmessage = (event) => {
+        addMessage(event.data)
+      }
+
+      ws.onclose = () => {
+        addMessage("Disconnected from server")
+        btn.innerHTML = "Connect"
+        ws = null
+      }
+
+      ws.onerror = (err) => {
+        addMessage("Error connecting to server")
+        console.error("Error connecting to server")
+      }
+    }
+  </script>
+
+</body>
+
+</html>
